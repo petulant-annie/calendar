@@ -1,0 +1,25 @@
+{
+  "name": "calendar",
+  "version": "1.0.0",
+  "description": "Calendar using react-redux",
+  "main": "index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/petulant-annie/calendar.git"
+  },
+  "author": "Anna Zakharenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/petulant-annie/calendar/issues"
+  },
+  "homepage": "https://github.com/petulant-annie/calendar#readme",
+  "dependencies": {
+    "react": "^16.8.6",
+    "redux": "^4.0.4",
+    "react-redux": "^7.1.0",
+    "typescript": "^3.5.3"
+  }
+}
