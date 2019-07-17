@@ -4,6 +4,7 @@
   "description": "Calendar using react-redux",
   "main": "index.tsx",
   "scripts": {
+    "lint": "tslint --project ./",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,9 +18,10 @@
   },
   "homepage": "https://github.com/petulant-annie/calendar#readme",
   "dependencies": {
+    "parcel": "^1.12.3",
     "react": "^16.8.6",
-    "redux": "^4.0.4",
     "react-redux": "^7.1.0",
+    "redux": "^4.0.4",
     "typescript": "^3.5.3"
   }
 }
