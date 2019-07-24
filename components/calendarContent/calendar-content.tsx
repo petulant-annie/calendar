@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import './style/calendar.sass';
+
 export default class CalendarContent extends React.Component {
 
   render() {
