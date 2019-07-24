@@ -37,8 +37,7 @@ export default class Popup extends React.Component {
                 placeholder="min"
                 min={0}
                 max={540}
-                value={30}
-              />
+          />
             </label>
           </div>
           <div className="calendar-task">

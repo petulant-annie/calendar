@@ -6,27 +6,86 @@ export default class CalendarContent extends React.Component {
 
   render() {
     return (
-      <div className="calendar">
-        <div className="cell">8:00</div>
-        <div className="cell">8:30</div>
-        <div className="cell">9:00</div>
-        <div className="cell">9:30</div>
-        <div className="cell">10:00</div>
-        <div className="cell">10:30</div>
-        <div className="cell">11:00</div>
-        <div className="cell">11:30</div>
-        <div className="cell">12:00</div>
-        <div className="cell">12:30</div>
-        <div className="cell">13:00</div>
-        <div className="cell">13:30</div>
-        <div className="cell">14:00</div>
-        <div className="cell">14:30</div>
-        <div className="cell">15:00</div>
-        <div className="cell">15:30</div>
-        <div className="cell">16:00</div>
-        <div className="cell">16:30</div>
-        <div className="cell">17:00</div>
-      </div>
+      <table className="calendar">
+        <tbody>
+          <tr className="cell">
+            <td>8:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>8:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>8:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>9:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>9:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>10:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>11:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>11:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>12:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>12:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>13:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>13:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>14:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>14:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>15:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>15:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>16:00</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>16:30</td>
+            <td>{}</td>
+          </tr>
+          <tr className="cell">
+            <td>17:00</td>
+            <td>{}</td>
+          </tr>
+        </tbody>
+      </table>
     );
   }
 }
