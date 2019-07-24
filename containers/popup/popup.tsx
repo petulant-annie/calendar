@@ -2,7 +2,24 @@ import * as React from 'react';
 
 import './style/popup.sass';
 
-export default class Popup extends React.Component {
+interface IPopupDisplay {
+  displayPopup: boolean;
+}
+
+export default class Popup extends React.Component<IPopupDisplay> {
+  displayPopup: boolean;
+  popupClassName: string;
+  constructor(props: IPopupDisplay) {
+    super(props);
+    this.displayPopup = this.props.displayPopup;
+    this.popupClassName = 'calendar-prompt-hide';
+  }
+
+  componentDidUpdate() {
+    if (this.displayPopup) {
+      this.popupClassName = 'calendar-prompt-shown';
+    } else this.popupClassName = 'calendar-prompt-hide';
+  }
 
   render() {
     const inputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +32,7 @@ export default class Popup extends React.Component {
     };
 
     return (
-      <div className="calendar-prompt calendar-prompt-shown">
+      <div className={this.popupClassName}>
         <form action="">
           <div className="start-time">
             <label>Enter start time:
@@ -37,7 +54,7 @@ export default class Popup extends React.Component {
                 placeholder="min"
                 min={0}
                 max={540}
-          />
+              />
             </label>
           </div>
           <div className="calendar-task">
