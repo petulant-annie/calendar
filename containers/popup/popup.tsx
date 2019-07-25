@@ -3,25 +3,13 @@ import * as React from 'react';
 import './style/popup.sass';
 
 interface IPopupDisplay {
-  displayPopup: boolean;
+  popupClassName: string;
 }
 
 export default class Popup extends React.Component<IPopupDisplay> {
-  displayPopup: boolean;
-  popupClassName: string;
-  constructor(props: IPopupDisplay) {
-    super(props);
-    this.displayPopup = this.props.displayPopup;
-    this.popupClassName = 'calendar-prompt-hide';
-  }
-
-  componentDidUpdate() {
-    if (this.displayPopup) {
-      this.popupClassName = 'calendar-prompt-shown';
-    } else this.popupClassName = 'calendar-prompt-hide';
-  }
 
   render() {
+    const { popupClassName } = this.props;
     const inputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       console.log(value);
@@ -31,8 +19,8 @@ export default class Popup extends React.Component<IPopupDisplay> {
       return inputValue;
     };
 
-    return (
-      <div className={this.popupClassName}>
+    const popup = (
+      <div className={popupClassName}>
         <form action="">
           <div className="start-time">
             <label>Enter start time:
@@ -83,6 +71,12 @@ export default class Popup extends React.Component<IPopupDisplay> {
           >Remove
           </button>
         </form>
+      </div>
+    );
+
+    return (
+      <div>
+        {popup}
       </div>
     );
   }

@@ -3,11 +3,11 @@ import * as React from 'react';
 import './style/calendar.sass';
 
 interface IPopup {
-  showPopup: () => void;
+  showPopup: (e: React.MouseEvent<Element, MouseEvent>) => void;
 }
 
 export default class CalendarContent extends React.Component<IPopup> {
-  showPopup: () => void;
+  showPopup: (e: React.MouseEvent<Element, MouseEvent>) => void;
   constructor(props: IPopup) {
     super(props);
     this.showPopup = this.props.showPopup;
