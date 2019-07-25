@@ -10,6 +10,8 @@ export default class Popup extends React.Component<IPopupDisplay> {
 
   render() {
     const { popupClassName } = this.props;
+    console.log(popupClassName);
+
     const inputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       console.log(value);

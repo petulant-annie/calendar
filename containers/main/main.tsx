@@ -26,25 +26,20 @@ export default class Main extends React.Component<IMainState> {
   }
 
   changePopupClassName() {
-    // if (this.state.showPopup) {
-      this.setState({ popupClassName: 'calendar-prompt-shown' });
-    // } else this.setState({ popupClassName: 'calendar-prompt-hide' });
+    this.setState({ popupClassName: 'calendar-prompt-shown' });
   }
 
   handlePopupShow() {
     const showTaskEditor = (e: React.MouseEvent) => {
+      e.preventDefault();
       this.setState({ showPopup: true });
       this.changePopupClassName();
-      console.log('bam');
-      console.log(this.state);
     };
 
     return showTaskEditor;
   }
 
   render() {
-    console.log(this.state.popupClassName);
-
     return (
       <div className="main-content">
         <CalendarContent
