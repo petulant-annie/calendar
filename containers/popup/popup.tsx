@@ -1,16 +1,20 @@
 import * as React from 'react';
+import classNames from 'classnames';
 
 import './style/popup.sass';
 
 interface IPopupDisplay {
-  popupClassName: string;
+  showPopup: boolean;
 }
 
 export default class Popup extends React.Component<IPopupDisplay> {
 
   render() {
-    const { popupClassName } = this.props;
-    console.log(popupClassName);
+
+    const popupClassName = classNames({
+      'calendar-prompt-hide': !this.props.showPopup,
+      'calendar-prompt-shown': this.props.showPopup,
+    });
 
     const inputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;

@@ -42,8 +42,10 @@
     "tslint-react": "^4.0.0"
   },
   "dependencies": {
+    "@types/classnames": "^2.2.9",
     "@types/react-redux": "^7.0.5",
     "@types/redux-logger": "^3.0.7",
+    "classnames": "^2.2.6",
     "lib-react-components": "^0.3.11",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
