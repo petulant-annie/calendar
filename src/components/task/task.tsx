@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import './style/task.sass';
-
 export default class Task extends React.Component {
 
   render() {
