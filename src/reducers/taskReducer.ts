@@ -1,4 +1,5 @@
 import { INITIAL_STATE } from '../constants';
+import { IAddTask } from '../interfaces';
 
 const calendarState = (
   state = INITIAL_STATE,
@@ -6,9 +7,16 @@ const calendarState = (
 ) => {
   switch (action.type) {
     case 'ADD_TASK':
-      const { time, task } = action;
+      const {
+        start,
+        duration,
+        title } = action as IAddTask;
 
-      return { ...state, time, task };
+      return {
+        ...state, start,
+        duration,
+        title,
+      };
 
     default:
       return state;
