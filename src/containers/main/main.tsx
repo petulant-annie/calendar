@@ -1,17 +1,11 @@
 import * as React from 'react';
 
-import CalendarContent from '../../components/calendarContent/calendar-content';
-import Popup from '../popup/popup';
+import CalendarContent from '../../calendarContent/calendar-content';
+import Popup from '../../components/popup/popup';
 
 import './style/main.sass';
 
-interface IMainState {
-  state: {
-    showPopup: boolean,
-  };
-}
-
-export default class Main extends React.Component<IMainState> {
+export default class Main extends React.Component {
   state: {
     showPopup: boolean,
   };

@@ -38,7 +38,7 @@ export default class Popup extends React.Component<IPopupDisplay> {
                 maxLength={5}
                 type="time"
                 onChange={inputValue}
-              />
+          />
             </label>
           </div>
           <div className="duration-time">
@@ -48,7 +48,7 @@ export default class Popup extends React.Component<IPopupDisplay> {
                 placeholder="min"
                 min={0}
                 max={540}
-              />
+          />
             </label>
           </div>
           <div className="calendar-task">
