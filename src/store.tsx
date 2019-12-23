@@ -2,7 +2,7 @@ import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
-import calendarState from './src/reducers/taskReducer';
+import calendarState from './reducers/taskReducer';
 
 const store = createStore(
   combineReducers({

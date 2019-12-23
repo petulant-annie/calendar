@@ -3,7 +3,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import { addTask } from '../../actions/taskActions';
-import CalendarContent from '../../calendarContent/calendar-content';
+import CalendarContent from '../../components/calendarContent/calendar-content';
 import { IInitialState } from '../../interfaces';
 
 import './style/main.sass';

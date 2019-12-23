@@ -1,90 +1,29 @@
 import * as React from 'react';
 
+import { TIMESTAMP } from '../../constants';
 import './style/calendar.sass';
 
 export default class CalendarContent extends React.Component {
+  constructor(props: any) {
+    super(props);
+
+  }
+
   render() {
     const taskList = (
-      <table
-        className="calendar"
-        data-toggle="modal"
-        data-target="#taskModalCenter"
-      >
-        <tbody>
-          <tr className="cell">
-            <td>8:00</td>
+      Object.entries(TIMESTAMP).map((value: [string, string]) => {
+        return (
+          <tr
+            key={value[0]}
+            className="cell"
+            data-toggle="modal"
+            data-target="#taskModalCenter"
+          >
+            <td>{value[1]}</td>
             <td />
           </tr>
-          <tr className="cell">
-            <td>8:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>9:00</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>9:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>10:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>11:00</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>11:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>12:00</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>12:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>13:00</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>13:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>14:00</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>14:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>15:00</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>15:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>16:00</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>16:30</td>
-            <td />
-          </tr>
-          <tr className="cell">
-            <td>17:00</td>
-            <td />
-          </tr>
-        </tbody>
-      </table>
+        );
+      })
     );
 
     const modal = (
@@ -119,7 +58,7 @@ export default class CalendarContent extends React.Component {
                 <input
                   type="number"
                   placeholder="min"
-                  min={0}
+                  min={15}
                   max={540}
                 />
               </label>
@@ -149,7 +88,11 @@ export default class CalendarContent extends React.Component {
 
     return (
       <div>
-        {taskList}
+        <table className="calendar">
+          <tbody>
+            {taskList}
+          </tbody>
+        </table>
         {modal}
       </div>
     );
