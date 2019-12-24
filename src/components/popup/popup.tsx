@@ -1,7 +1,72 @@
 import * as React from 'react';
 
+import { TIMESTAMP } from '../../constants';
+
 export default class Modal extends React.Component {
+  selectStart: HTMLSelectElement;
+  selectEnd: HTMLSelectElement;
+  state: {
+    start: string;
+    startDuration: number;
+    end: string;
+    endDuration: number;
+    title: string;
+  };
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      start: '',
+      startDuration: 0,
+      end: '',
+      endDuration: 0,
+      title: '',
+    };
+  }
+
+  handleSelectStart = (e: React.ChangeEvent) => {
+    e.preventDefault();
+    Object.entries(TIMESTAMP).find((elem) => {
+      if (this.selectStart.value === elem[0]) {
+        this.setState({ start: elem[1], startDuration: elem[0] });
+      }
+    });
+  }
+
+  handleSelectEnd = (e: React.ChangeEvent) => {
+    e.preventDefault();
+    Object.entries(TIMESTAMP).find((elem) => {
+      if (this.selectEnd.value === elem[0]) {
+        this.setState({ end: elem[1], endDuration: elem[0] });
+      }
+    });
+  }
+
+  handleTitleChange = (e: React.ChangeEvent) => {
+    e.preventDefault();
+    const target = e.target as HTMLTextAreaElement;
+    this.setState({ title: target.value });
+  }
+
+  handleSaveTask = () => {
+    const duration = this.state.endDuration - this.state.startDuration;
+
+  }
+
   render() {
+    const timeSelect = (
+      Object.entries(TIMESTAMP).map((value: [string, string]) => {
+        return (
+          <option
+            key={value[0]}
+            value={value[0]}
+          >
+            {value[1]}
+          </option>
+        );
+      })
+    );
+
     return (
       <div
         className="modal fade"
@@ -20,28 +85,31 @@ export default class Modal extends React.Component {
               </button>
             </div>
             <div className="modal-body">
-              <label>Enter start time:
-                <input
-                  type="time"
-                  id="startTime"
-                  min="08:00"
-                  max="17:00"
+              <div className="form-group">
+                <select
+                  className="custom-select"
                   required={true}
-                  maxLength={5}
-                />
-              </label>
-              <label>Enter duaration:
-                <input
-                  type="number"
-                  placeholder="min"
-                  min={15}
-                  max={540}
-                />
-              </label>
+                  ref={select => this.selectStart = select}
+                  onChange={this.handleSelectStart}
+                >
+                  <option value="">Start</option>
+                  {timeSelect}
+                </select>
+                <select
+                  className="custom-select"
+                  required={true}
+                  ref={select => this.selectEnd = select}
+                  onChange={this.handleSelectEnd}
+                >
+                  <option value="">End</option>
+                  {timeSelect}
+                </select>
+              </div>
               <textarea
                 className="form-control"
                 id="taskInput"
                 rows={3}
+                onChange={this.handleTitleChange}
               />
             </div>
             <div className="modal-footer">
@@ -54,6 +122,7 @@ export default class Modal extends React.Component {
               <button
                 type="button"
                 className="btn btn-primary"
+                onClick={this.handleSaveTask}
               >Save changes
               </button>
             </div>
