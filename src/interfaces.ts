@@ -5,9 +5,3 @@ export interface IInitialState {
   duration: number;
   title: string;
 }
-
-export interface IAddTask extends Action {
-  start: number;
-  duration: number;
-  title: string;
-}

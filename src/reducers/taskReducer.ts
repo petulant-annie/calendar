@@ -1,5 +1,4 @@
 import { INITIAL_STATE } from '../constants';
-import { IAddTask } from '../interfaces';
 
 const calendarState = (
   state = INITIAL_STATE,
@@ -10,7 +9,7 @@ const calendarState = (
       const {
         start,
         duration,
-        title } = action as IAddTask;
+        title } = action.payload;
 
       return {
         ...state, start,

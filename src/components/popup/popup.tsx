@@ -1,8 +1,12 @@
 import * as React from 'react';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
 import { TIMESTAMP } from '../../constants';
+import { IInitialState } from '../../interfaces';
+import { sendTask } from '../../services/apiRequests';
 
-export default class Modal extends React.Component {
+class Modal extends React.Component {
   selectStart: HTMLSelectElement;
   selectEnd: HTMLSelectElement;
   state: {
@@ -50,7 +54,13 @@ export default class Modal extends React.Component {
 
   handleSaveTask = () => {
     const duration = this.state.endDuration - this.state.startDuration;
-
+    const data = {
+      duration,
+      user: 'user',
+      start: this.state.start,
+      title: this.state.title,
+    };
+    sendTask(data);
   }
 
   render() {
@@ -132,3 +142,21 @@ export default class Modal extends React.Component {
     );
   }
 }
+
+export default connect(
+  (state: IInitialState) => state,
+  dispatch => ({
+    addTask: (
+      user: string,
+      start: string,
+      duration: number,
+      title: string) => {
+      const payload = {
+        user,
+        start,
+        duration,
+        title,
+      };
+      dispatch({ payload, type: 'ADD_TASK' });
+    },
+  }))(Modal);

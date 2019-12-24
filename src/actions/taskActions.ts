@@ -1,11 +1,18 @@
-import { IAddTask } from '../interfaces';
+import { Dispatch } from 'redux';
 
 export const addTask = (
-  start: number,
+  user: string,
+  start: string,
   duration: number,
-  title: string): IAddTask => ({
-    start,
-    duration,
-    title,
+  title: string,
+) => (dispatch: Dispatch) => {
+  dispatch({
     type: 'ADD_TASK',
+    payload: {
+      user,
+      start,
+      duration,
+      title,
+    },
   });
+};
