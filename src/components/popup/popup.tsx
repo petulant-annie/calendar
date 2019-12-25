@@ -58,9 +58,10 @@ class Modal extends React.Component<IModal> {
 
   handleSaveTask = () => {
     const duration = this.state.endDuration - this.state.startDuration;
+    const user = localStorage.getItem('user');
     const data = {
       duration,
-      user: 'user',
+      user,
       start: this.state.start,
       title: this.state.title,
     };
