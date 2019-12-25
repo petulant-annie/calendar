@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import store from '../../store';
 import { TIMESTAMP } from '../../constants';
 import Modal from '../popup/popup';
 import './style/calendar.sass';

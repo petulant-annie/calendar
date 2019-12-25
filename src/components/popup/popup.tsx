@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { Dispatch } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import { TIMESTAMP } from '../../constants';
 import { IInitialState } from '../../interfaces';
-import { sendTask } from '../../services/apiRequests';
+import { addTask } from '../../actions/taskActions';
 
-class Modal extends React.Component {
+interface IModal {
+  addTask: (data: { user: string, start: string, duration: number, title: string }) => void;
+}
+
+class Modal extends React.Component<IModal> {
   selectStart: HTMLSelectElement;
   selectEnd: HTMLSelectElement;
   state: {
@@ -17,7 +21,7 @@ class Modal extends React.Component {
     title: string;
   };
 
-  constructor(props: any) {
+  constructor(props: IModal) {
     super(props);
     this.state = {
       start: '',
@@ -60,7 +64,7 @@ class Modal extends React.Component {
       start: this.state.start,
       title: this.state.title,
     };
-    sendTask(data);
+    this.props.addTask(data);
   }
 
   render() {
@@ -143,20 +147,11 @@ class Modal extends React.Component {
   }
 }
 
-export default connect(
-  (state: IInitialState) => state,
-  dispatch => ({
-    addTask: (
-      user: string,
-      start: string,
-      duration: number,
-      title: string) => {
-      const payload = {
-        user,
-        start,
-        duration,
-        title,
-      };
-      dispatch({ payload, type: 'ADD_TASK' });
-    },
-  }))(Modal);
+const mapStateToProps = (state: IInitialState) => state;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators(
+    { addTask },
+    dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Modal);

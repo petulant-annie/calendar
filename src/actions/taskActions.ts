@@ -1,18 +1,24 @@
 import { Dispatch } from 'redux';
+import { sendTask } from '../services/apiRequests';
 
-export const addTask = (
+export const addTask = (data: {
+  duration: number,
   user: string,
   start: string,
-  duration: number,
   title: string,
-) => (dispatch: Dispatch) => {
-  dispatch({
-    type: 'ADD_TASK',
-    payload: {
-      user,
-      start,
-      duration,
-      title,
-    },
-  });
+}) => async (dispatch: Dispatch) => {
+  try {
+    const sendData = await sendTask(data);
+    if (sendData.task.error) {
+      return sendData.task.error.message;
+    }
+
+    return dispatch({
+      type: 'ADD_TASK',
+      payload: data,
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
 };

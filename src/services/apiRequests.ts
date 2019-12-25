@@ -5,12 +5,16 @@ export const sendTask = async (
     start: string,
     title: string,
   }) => {
-  const res = await fetch('http://localhost:3030/', {
-    method: 'POST',
-    mode: 'cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
+  try {
+    const res = await fetch('http://localhost:3030/', {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
 
-  return await res.json();
+    return await res.json();
+  } catch (error) {
+    return error;
+  }
 };

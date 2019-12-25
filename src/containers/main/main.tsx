@@ -5,7 +5,7 @@ import { IInitialState } from '../../interfaces';
 
 import './style/main.sass';
 
-export default class Main extends React.Component<IInitialState> {
+class Main extends React.Component<IInitialState> {
   render() {
     return (
       <div className="main-content">
@@ -14,3 +14,5 @@ export default class Main extends React.Component<IInitialState> {
     );
   }
 }
+
+export default Main;
