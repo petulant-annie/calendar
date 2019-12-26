@@ -1,11 +1,14 @@
 import * as React from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
+import { IInitialState } from '../../interfaces';
 import { TIMESTAMP } from '../../constants';
 import Modal from '../popup/popup';
 import './style/calendar.sass';
 
-export default class CalendarContent extends React.Component {
-  constructor(props: any) {
+class CalendarContent extends React.Component<IInitialState> {
+  constructor(props: IInitialState) {
     super(props);
 
   }
@@ -13,6 +16,16 @@ export default class CalendarContent extends React.Component {
   render() {
     const taskList = (
       Object.entries(TIMESTAMP).map((value: [string, string]) => {
+        const currentUserTasks = this.props.tasks.map((item, index) => {
+          if (value[1] === item.start) {
+            return (
+              <div key={index}>
+                {item.title}
+              </div>
+            );
+          }
+        });
+
         return (
           <tr
             key={value[0]}
@@ -21,7 +34,7 @@ export default class CalendarContent extends React.Component {
             data-target="#taskModalCenter"
           >
             <td>{value[1]}</td>
-            <td />
+            <td>{currentUserTasks}</td>
           </tr>
         );
       })
@@ -39,3 +52,13 @@ export default class CalendarContent extends React.Component {
     );
   }
 }
+
+
+const mapStateToProps = (state: IInitialState) => state;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators(
+    {},
+    dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalendarContent);

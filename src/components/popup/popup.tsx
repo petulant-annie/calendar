@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 
 import { TIMESTAMP } from '../../constants';
 import { IInitialState } from '../../interfaces';
-import { addTask } from '../../actions/taskActions';
+import { addTask, getTasks } from '../../actions/taskActions';
 
 interface IModal {
   addTask: (data: { user: string, start: string, duration: number, title: string }) => void;
+  getTasks: (user: string) => void;
 }
 
 class Modal extends React.Component<IModal> {
@@ -66,6 +67,7 @@ class Modal extends React.Component<IModal> {
       title: this.state.title,
     };
     this.props.addTask(data);
+    this.props.getTasks(user);
   }
 
   render() {
@@ -137,6 +139,7 @@ class Modal extends React.Component<IModal> {
               <button
                 type="button"
                 className="btn btn-primary"
+                data-dismiss="modal"
                 onClick={this.handleSaveTask}
               >Save changes
               </button>
@@ -151,7 +154,7 @@ class Modal extends React.Component<IModal> {
 const mapStateToProps = (state: IInitialState) => state;
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
-    { addTask },
+    { addTask, getTasks },
     dispatch);
 };
 

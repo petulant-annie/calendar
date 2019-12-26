@@ -1,15 +1,13 @@
-import { Action } from 'redux';
 
-export interface IInitialState {
+interface ITasksObject {
   start: string;
   duration: number;
   title: string;
 }
 
-export interface IAddTask extends Action {
-  payload: {
-    start: string;
-    duration: number;
-    title: string;
-  };
+export interface IInitialState {
+  start: string;
+  duration: number;
+  title: string;
+  tasks: ITasksObject[];
 }

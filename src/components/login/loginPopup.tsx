@@ -1,8 +1,17 @@
 import * as React from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
-export default class LoginPopup extends React.Component {
+import { getTasks } from '../../actions/taskActions';
+import { IInitialState } from '../../interfaces';
+
+interface ILoginPopup {
+  getTasks: (user: string) => void;
+}
+
+class LoginPopup extends React.Component<ILoginPopup> {
   state: { user: string };
-  constructor(props: any) {
+  constructor(props: ILoginPopup) {
     super(props);
     this.state = { user: '' };
   }
@@ -14,7 +23,10 @@ export default class LoginPopup extends React.Component {
   }
 
   handleSaveUser = () => {
-    localStorage.setItem('user', `${this.state.user}`);
+    if (this.state.user !== '') {
+      localStorage.setItem('user', `${this.state.user}`);
+      this.props.getTasks(this.state.user);
+    }
   }
 
   render() {
@@ -56,6 +68,7 @@ export default class LoginPopup extends React.Component {
               <button
                 type="button"
                 className="btn btn-primary"
+                data-dismiss="modal"
                 onClick={this.handleSaveUser}
               >Save changes
               </button>
@@ -66,3 +79,12 @@ export default class LoginPopup extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state: IInitialState) => state;
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return bindActionCreators(
+    { getTasks },
+    dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPopup);

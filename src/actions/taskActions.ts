@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { sendTask } from '../services/apiRequests';
+import { sendTask, getUserTasks } from '../services/apiRequests';
 
 export const addTask = (data: {
   duration: number,
@@ -9,13 +9,35 @@ export const addTask = (data: {
 }) => async (dispatch: Dispatch) => {
   try {
     const sendData = await sendTask(data);
-    if (sendData.task.error) {
-      return sendData.task.error.message;
+    if (sendData.error) {
+      return sendData.error.message;
     }
 
     return dispatch({
       type: 'ADD_TASK',
       payload: data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTasks = (user: string) => async (dispatch: Dispatch) => {
+  try {
+    const getAllTasks = await getUserTasks(user);
+    if (getAllTasks.error) {
+      return getAllTasks.error.message;
+    }
+    if (getAllTasks.tasks.length > 0) {
+      return dispatch({
+        type: 'GET_USER_TASKS',
+        payload: { tasks: getAllTasks.tasks },
+      });
+    }
+
+    return dispatch({
+      type: 'GET_USER_TASKS',
+      payload: { tasks: [{}] },
     });
 
   } catch (error) {

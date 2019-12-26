@@ -18,3 +18,17 @@ export const sendTask = async (
     return error;
   }
 };
+
+export const getUserTasks = async (user: string) => {
+  try {
+    const res = await fetch(`http://localhost:3030/${user}`, {
+      method: 'GET',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    return await res.json();
+  } catch (error) {
+    return error;
+  }
+};
