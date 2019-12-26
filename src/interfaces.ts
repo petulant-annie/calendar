@@ -1,5 +1,5 @@
 
-interface ITasksObject {
+export interface ITasksObject {
   start: string;
   duration: number;
   title: string;

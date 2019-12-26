@@ -2,15 +2,21 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { IInitialState } from '../../interfaces';
+import { IInitialState, ITasksObject } from '../../interfaces';
 import { TIMESTAMP } from '../../constants';
 import Modal from '../popup/popup';
+import { getTasks } from '../../actions/taskActions';
 import './style/calendar.sass';
 
-class CalendarContent extends React.Component<IInitialState> {
-  constructor(props: IInitialState) {
-    super(props);
+interface ICalendarContent<IInitialState> {
+  tasks: ITasksObject[];
+  getTasks: (user: string) => void;
+}
 
+class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
+  componentDidMount() {
+    const user = localStorage.getItem('user');
+    this.props.getTasks(user);
   }
 
   render() {
@@ -57,7 +63,7 @@ class CalendarContent extends React.Component<IInitialState> {
 const mapStateToProps = (state: IInitialState) => state;
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
-    {},
+    { getTasks },
     dispatch);
 };
 
