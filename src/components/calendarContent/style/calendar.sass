@@ -1,3 +1,6 @@
+.calendar
+  width: 250px
+
 .calendar-table
   font-size: 14px
 
@@ -10,14 +13,21 @@
 .task-content
   display: flex
   flex-direction: row
+  height: 30px
+  overflow: visible
   max-width: 200px
+
+.task-time
+  height: 30px
 
 .task-content-item
   background-color: #E2ECF5
   border-left: 2px solid #6E9ECF
-  text-overflow: ellipsis
   overflow: hidden
+  padding: 3px
+  text-overflow: ellipsis
   width: 100%
+  white-space: nowrap
 
 .calendar-table tr td:first-child
   color: #757575
