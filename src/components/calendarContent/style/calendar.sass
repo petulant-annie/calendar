@@ -1,3 +1,34 @@
-.calendar td
-  border: 1px solid grey
-  width: 100px
+.calendar-table
+  font-size: 14px
+
+.calendar-table tr
+  height: 30px
+
+.calendar-table tr td
+  padding: 0
+
+.task-content
+  display: flex
+  flex-direction: row
+  max-width: 200px
+
+.task-content-item
+  background-color: #E2ECF5
+  border-left: 2px solid #6E9ECF
+  text-overflow: ellipsis
+  overflow: hidden
+  width: 100%
+
+.calendar-table tr td:first-child
+  color: #757575
+  font-size: 12px
+  max-width: 50px
+
+.calendar-table tr:nth-child(even) td:first-child
+  color: transparent
+
+.calendar-table tr:nth-child(4n+1) td
+  border-top: 1px solid #E0E0E0
+
+.calendar-table tr:nth-child(4n+1) td:first-child
+  font-size: 16px

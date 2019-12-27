@@ -7,6 +7,7 @@ import { IInitialState } from '../../interfaces';
 import { addTask, getTasks } from '../../actions/taskActions';
 
 interface IModal {
+  user: string;
   addTask: (data: { user: string, start: string, duration: number, title: string }) => void;
   getTasks: (user: string) => void;
 }
@@ -58,16 +59,17 @@ class Modal extends React.Component<IModal> {
   }
 
   handleSaveTask = () => {
-    const duration = this.state.endDuration - this.state.startDuration;
-    const user = localStorage.getItem('user');
-    const data = {
-      duration,
-      user,
-      start: this.state.start,
-      title: this.state.title,
-    };
-    this.props.addTask(data);
-    this.props.getTasks(user);
+    if (this.props.user && this.props.user.length > 0) {
+      const duration = this.state.endDuration - this.state.startDuration;
+      const data = {
+        duration,
+        user: this.props.user,
+        start: this.state.start,
+        title: this.state.title,
+      };
+      this.props.addTask(data);
+      this.props.getTasks(this.props.user);
+    }
   }
 
   render() {

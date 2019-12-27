@@ -2,11 +2,11 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { getTasks } from '../../actions/taskActions';
 import { IInitialState } from '../../interfaces';
+import { setUser } from '../../actions/taskActions';
 
 interface ILoginPopup {
-  getTasks: (user: string) => void;
+  setUser: (user: string) => void;
 }
 
 class LoginPopup extends React.Component<ILoginPopup> {
@@ -25,7 +25,7 @@ class LoginPopup extends React.Component<ILoginPopup> {
   handleSaveUser = () => {
     if (this.state.user !== '') {
       localStorage.setItem('user', `${this.state.user}`);
-      this.props.getTasks(this.state.user);
+      this.props.setUser(this.state.user);
     }
   }
 
@@ -83,7 +83,7 @@ class LoginPopup extends React.Component<ILoginPopup> {
 const mapStateToProps = (state: IInitialState) => state;
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
-    { getTasks },
+    { setUser },
     dispatch);
 };
 

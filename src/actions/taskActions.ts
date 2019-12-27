@@ -1,6 +1,13 @@
 import { Dispatch } from 'redux';
 import { sendTask, getUserTasks } from '../services/apiRequests';
 
+export const setUser = (user: string) => (dispatch: Dispatch) => {
+  return dispatch({
+    type: 'SET_USER',
+    payload: user,
+  });
+};
+
 export const addTask = (data: {
   duration: number,
   user: string,
@@ -43,4 +50,10 @@ export const getTasks = (user: string) => async (dispatch: Dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const logout = () => (dispatch: Dispatch) => {
+  dispatch({
+    type: 'LOGOUT',
+  });
 };

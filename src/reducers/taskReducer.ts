@@ -5,6 +5,8 @@ const calendarState = (
   action: any,
 ) => {
   switch (action.type) {
+    case 'SET_USER':
+      return { ...state, user: action.payload };
     case 'ADD_TASK':
       return {
         ...state,
@@ -15,6 +17,8 @@ const calendarState = (
 
     case 'GET_USER_TASKS':
       return { ...state, tasks: action.payload.tasks };
+    case 'LOGOUT':
+      return INITIAL_STATE;
     default:
       return state;
   }

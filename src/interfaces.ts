@@ -6,6 +6,7 @@ export interface ITasksObject {
 }
 
 export interface IInitialState {
+  user: string;
   start: string;
   duration: number;
   title: string;

@@ -1,4 +1,5 @@
 export const INITIAL_STATE = {
+  user: '',
   start: 0,
   duration: 0,
   title: '',

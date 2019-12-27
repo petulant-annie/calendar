@@ -2,21 +2,32 @@ import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { IInitialState, ITasksObject } from '../../interfaces';
 import { TIMESTAMP } from '../../constants';
 import Modal from '../popup/popup';
+import { IInitialState, ITasksObject } from '../../interfaces';
 import { getTasks } from '../../actions/taskActions';
+
 import './style/calendar.sass';
 
 interface ICalendarContent<IInitialState> {
   tasks: ITasksObject[];
+  user: string;
   getTasks: (user: string) => void;
 }
 
 class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
   componentDidMount() {
     const user = localStorage.getItem('user');
-    this.props.getTasks(user);
+    if (user && user.length > 0) {
+      this.props.getTasks(user);
+    }
+  }
+
+  componentDidUpdate(prevProps: ICalendarContent<IInitialState>) {
+    if (this.props.user !== prevProps.user &&
+      this.props.user) {
+      this.props.getTasks(this.props.user);
+    }
   }
 
   render() {
@@ -25,7 +36,7 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
         const currentUserTasks = this.props.tasks.map((item, index) => {
           if (value[1] === item.start) {
             return (
-              <div key={index}>
+              <div className="task-content-item" key={index}>
                 {item.title}
               </div>
             );
@@ -39,8 +50,8 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
             data-toggle="modal"
             data-target="#taskModalCenter"
           >
-            <td>{value[1]}</td>
-            <td>{currentUserTasks}</td>
+            <td className="task-time">{value[1]}</td>
+            <td className="task-content">{currentUserTasks}</td>
           </tr>
         );
       })
@@ -49,7 +60,7 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
     return (
       <div>
         <table className="calendar">
-          <tbody>
+          <tbody className="calendar-table">
             {taskList}
           </tbody>
         </table>
@@ -58,7 +69,6 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
     );
   }
 }
-
 
 const mapStateToProps = (state: IInitialState) => state;
 const mapDispatchToProps = (dispatch: Dispatch) => {
