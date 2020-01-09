@@ -11,4 +11,5 @@ export interface IInitialState {
   duration: number;
   title: string;
   tasks: ITasksObject[];
+  error: boolean;
 }

@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 
 import { TIMESTAMP } from '../../constants';
 import { IInitialState } from '../../interfaces';
-import { addTask, getTasks } from '../../actions/taskActions';
+import { addTask, getTasks, errorAction } from '../../actions/taskActions';
 
 interface IModal {
   user: string;
   addTask: (data: { user: string, start: string, duration: number, title: string }) => void;
   getTasks: (user: string) => void;
+  errorAction: (error: boolean) => void;
 }
 
 class Modal extends React.Component<IModal> {
@@ -67,8 +68,12 @@ class Modal extends React.Component<IModal> {
         start: this.state.start,
         title: this.state.title,
       };
-      this.props.addTask(data);
-      this.props.getTasks(this.props.user);
+      if (duration > 0) {
+        this.props.addTask(data);
+        this.props.getTasks(this.props.user);
+      } else {
+        this.props.errorAction(true);
+      }
     }
   }
 
@@ -104,9 +109,9 @@ class Modal extends React.Component<IModal> {
               </button>
             </div>
             <div className="modal-body">
-              <div className="form-group">
+              <div className="form-group time-select">
                 <select
-                  className="custom-select"
+                  className="custom-select start-time-select-item"
                   required={true}
                   ref={select => this.selectStart = select}
                   onChange={this.handleSelectStart}
@@ -156,7 +161,7 @@ class Modal extends React.Component<IModal> {
 const mapStateToProps = (state: IInitialState) => state;
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
-    { addTask, getTasks },
+    { addTask, getTasks, errorAction },
     dispatch);
 };
 

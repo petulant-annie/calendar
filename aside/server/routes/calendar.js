@@ -3,7 +3,6 @@ const calendar = express.Router();
 const mongoose = require('mongoose');
 
 const asyncMiddleware = require('../asyncMiddleware');
-// const errorLogger = require('../loggers/errorLogger').logger;
 const infoLogger = require('../loggers/infoLogger').logger;
 const taskScheme = require('../schemes/taskScheme');
 const Task = mongoose.model('articles_views', taskScheme);

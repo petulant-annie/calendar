@@ -17,6 +17,9 @@ const calendarState = (
 
     case 'GET_USER_TASKS':
       return { ...state, tasks: action.payload.tasks };
+
+    case 'ERROR_ACTION':
+      return { ...state, error: action.payload.error };
     case 'LOGOUT':
       return INITIAL_STATE;
     default:

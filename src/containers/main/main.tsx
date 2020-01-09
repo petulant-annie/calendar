@@ -5,14 +5,16 @@ import { connect } from 'react-redux';
 import CalendarContent from '../../components/calendarContent/calendar-content';
 import LoginPopup from '../../components/login/loginPopup';
 import { IInitialState } from '../../interfaces';
-import { setUser, logout } from '../../actions/taskActions';
+import { setUser, logout, errorAction } from '../../actions/taskActions';
 
 import './style/main.sass';
 
 interface IMain<IInitialState> {
   setUser: (user: string) => void;
+  errorAction: (error: boolean) => void;
   logout: () => void;
   user: string;
+  error: boolean;
 }
 
 class Main extends React.Component<IMain<IInitialState>> {
@@ -21,10 +23,15 @@ class Main extends React.Component<IMain<IInitialState>> {
     super(props);
     this.state = { isUser: false };
   }
+
   handleLogOut = () => {
     localStorage.clear();
     this.props.logout();
     this.setState({ isUser: false });
+  }
+
+  handleToastClose = () => {
+    this.props.errorAction(false);
   }
 
   componentDidMount() {
@@ -45,9 +52,45 @@ class Main extends React.Component<IMain<IInitialState>> {
   }
 
   render() {
+    const toaster = (
+      this.props.error ?
+        (
+          <div
+            className="toast"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            data-autohide="false"
+          >
+            <div className="toast-header">
+              <strong className="mr-auto">Start time must be earlier than the end</strong>
+              <button
+                type="button"
+                className="ml-2 mb-1 close"
+                data-dismiss="toast"
+                aria-label="Close"
+                onClick={this.handleToastClose}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        ) :
+        ''
+    );
+
     return (
       <div className="main-content">
-        <div className="login-container">
+        {toaster}
+        <div className="buttons-container">
+          <button
+            type="button"
+            className="btn btn-primary add-task"
+            data-toggle="modal"
+            data-target="#taskModalCenter"
+          >
+            Add Task
+          </button>
           <button
             type="button"
             className={!this.state.isUser ? 'btn btn-primary' : 'hide'}
@@ -74,7 +117,7 @@ class Main extends React.Component<IMain<IInitialState>> {
 const mapStateToProps = (state: IInitialState) => state;
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
-    { setUser, logout },
+    { setUser, logout, errorAction },
     dispatch);
 };
 

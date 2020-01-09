@@ -52,11 +52,8 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
             key={value[0]}
             className="cell"
           >
-            <td
-              className="task-time"
-              data-toggle="modal"
-              data-target="#taskModalCenter"
-            >{value[1]}
+            <td className="task-time">
+              {value[1]}
             </td>
             {currentUserTasks}
           </tr>

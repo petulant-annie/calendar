@@ -52,6 +52,13 @@ export const getTasks = (user: string) => async (dispatch: Dispatch) => {
   }
 };
 
+export const errorAction = (error: boolean) => (dispatch: Dispatch) => {
+  return dispatch({
+    type: 'ERROR_ACTION',
+    payload: { error },
+  });
+};
+
 export const logout = () => (dispatch: Dispatch) => {
   dispatch({
     type: 'LOGOUT',

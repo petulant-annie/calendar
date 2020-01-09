@@ -4,6 +4,7 @@ export const INITIAL_STATE = {
   duration: 0,
   title: '',
   tasks: [{}],
+  error: false,
 };
 
 export const TIMESTAMP = {
