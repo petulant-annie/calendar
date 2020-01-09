@@ -82,7 +82,7 @@ class Main extends React.Component<IMain<IInitialState>> {
         ''
     );
 
-    const dataStr = JSON.stringify(this.props.tasks);
+    const dataStr = this.props.tasks ? JSON.stringify(this.props.tasks) : 'Error';
     const dataUri =
       `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
 
