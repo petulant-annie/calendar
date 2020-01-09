@@ -59,7 +59,7 @@ class Modal extends React.Component<IModal> {
     this.setState({ title: target.value });
   }
 
-  handleSaveTask = () => {
+  handleSaveTask = async () => {
     if (this.props.user && this.props.user.length > 0) {
       const duration = this.state.endDuration - this.state.startDuration;
       const data = {
@@ -69,8 +69,8 @@ class Modal extends React.Component<IModal> {
         title: this.state.title,
       };
       if (duration > 0 && this.state.title !== '') {
-        this.props.addTask(data);
-        this.props.getTasks(this.props.user);
+        await this.props.addTask(data);
+        await this.props.getTasks(this.props.user);
       } else {
         this.props.errorAction(true);
       }

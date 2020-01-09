@@ -29,10 +29,10 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
     this.setState({ currentTask });
   }
 
-  handleDeleteTask = () => {
-    this.props.deleteTaskAction(this.state.currentTask, this.props.user);
+  handleDeleteTask = async () => {
+    await this.props.deleteTaskAction(this.state.currentTask, this.props.user);
+    await this.props.getTasks(this.props.user);
     this.setState({ currentTask: '' });
-    this.props.getTasks(this.props.user);
   }
 
   componentDidMount() {

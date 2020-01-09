@@ -14,6 +14,7 @@ interface IMain<IInitialState> {
   errorAction: (error: boolean) => void;
   logout: () => void;
   user: string;
+  tasks: {};
   error: boolean;
 }
 
@@ -81,13 +82,17 @@ class Main extends React.Component<IMain<IInitialState>> {
         ''
     );
 
+    const dataStr = JSON.stringify(this.props.tasks);
+    const dataUri =
+      `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+
     return (
       <div className="main-content">
         {toaster}
         <div className="buttons-container">
           <button
             type="button"
-            className="btn btn-primary add-task"
+            className="btn btn-primary header-btn"
             data-toggle="modal"
             data-target="#taskModalCenter"
           >
@@ -95,7 +100,7 @@ class Main extends React.Component<IMain<IInitialState>> {
           </button>
           <button
             type="button"
-            className={!this.state.isUser ? 'btn btn-primary' : 'hide'}
+            className={!this.state.isUser ? 'btn btn-primary header-btn' : 'hide'}
             data-toggle="modal"
             data-target="#loginPopup"
           >
@@ -103,11 +108,12 @@ class Main extends React.Component<IMain<IInitialState>> {
           </button>
           <button
             type="button"
-            className={this.state.isUser ? 'btn btn-secondary' : 'hide'}
+            className={this.state.isUser ? 'btn btn-secondary header-btn' : 'hide'}
             onClick={this.handleLogOut}
           >
             Logout
           </button>
+          <a href={dataUri} download="data.json" className="stretched-link">Download schedule</a>
         </div>
         <CalendarContent />
         <LoginPopup />
