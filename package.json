@@ -7,7 +7,7 @@
     "lint": "tslint --project ./",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel ./index.html",
-    "watch": "npx nodemon aside/mock-server/server.js"
+    "watch": "npx nodemon aside/server/server.js"
   },
   "repository": {
     "type": "git",

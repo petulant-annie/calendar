@@ -35,14 +35,14 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
       Object.entries(TIMESTAMP).map((value: [string, string]) => {
         const currentUserTasks = this.props.tasks.map((item, index) => {
           if (value[1] === item.start) {
-            const style = {
-              height: `${item.duration * 2}px`,
-            };
-
             return (
-              <div key={index} className="task-content-item" style={style}>
+              <td
+                key={index}
+                rowSpan={item.duration / 15}
+                className="task-content-item"
+              >
                 {item.title}
-              </div>
+              </td>
             );
           }
         });
@@ -51,13 +51,14 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
           <tr
             key={value[0]}
             className="cell"
-            data-toggle="modal"
-            data-target="#taskModalCenter"
           >
-            <td className="task-time">{value[1]}</td>
-            <td className="task-content">
-              {currentUserTasks}
+            <td
+              className="task-time"
+              data-toggle="modal"
+              data-target="#taskModalCenter"
+            >{value[1]}
             </td>
+            {currentUserTasks}
           </tr>
         );
       })
