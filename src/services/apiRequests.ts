@@ -32,3 +32,18 @@ export const getUserTasks = async (user: string) => {
     return error;
   }
 };
+
+export const deleteCurrentTask = async (currentTask: { title: string, user: string }) => {
+  try {
+    const res = await fetch('http://localhost:3030/', {
+      method: 'DELETE',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(currentTask),
+    });
+
+    return await res.json();
+  } catch (error) {
+    return error;
+  }
+};

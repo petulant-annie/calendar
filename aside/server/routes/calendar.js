@@ -25,7 +25,7 @@ calendar.post('/', asyncMiddleware(async (req, res) => {
 }));
 
 calendar.delete('/', asyncMiddleware(async (req, res) => {
-  await Task.findOneAndRemove({ start: req.body.start, user: req.body.user, });
+  await Task.findOneAndRemove({ title: req.body.title, user: req.body.user, });
   infoLogger.info('task deleted');
   res.send({});
 }));

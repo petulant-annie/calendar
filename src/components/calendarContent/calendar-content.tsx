@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { TIMESTAMP } from '../../constants';
 import Modal from '../popup/popup';
 import { IInitialState, ITasksObject } from '../../interfaces';
-import { getTasks } from '../../actions/taskActions';
+import { getTasks, deleteTaskAction } from '../../actions/taskActions';
 
 import './style/calendar.sass';
 
@@ -13,9 +13,28 @@ interface ICalendarContent<IInitialState> {
   tasks: ITasksObject[];
   user: string;
   getTasks: (user: string) => void;
+  deleteTaskAction: (title: string, user: string) => void;
 }
 
 class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
+  state: { currentTask: string };
+  constructor(props: ICalendarContent<IInitialState>) {
+    super(props);
+    this.state = {
+      currentTask: '',
+    };
+  }
+
+  handleCurrentTask(currentTask: string) {
+    this.setState({ currentTask });
+  }
+
+  handleDeleteTask = () => {
+    this.props.deleteTaskAction(this.state.currentTask, this.props.user);
+    this.setState({ currentTask: '' });
+    this.props.getTasks(this.props.user);
+  }
+
   componentDidMount() {
     const user = localStorage.getItem('user');
     if (user && user.length > 0) {
@@ -40,6 +59,9 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
                 key={index}
                 rowSpan={item.duration / 15}
                 className="task-content-item"
+                data-toggle="modal"
+                data-target="#deleteModal"
+                onClick={this.handleCurrentTask.bind(this, item.title)}
               >
                 {item.title}
               </td>
@@ -69,6 +91,40 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
           </tbody>
         </table>
         <Modal />
+        <div
+          className="modal fade"
+          id="deleteModal"
+          tabIndex={-1}
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">Delete Task?</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  data-dismiss="modal"
+                  onClick={this.handleDeleteTask}
+                >Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -77,7 +133,7 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
 const mapStateToProps = (state: IInitialState) => state;
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
-    { getTasks },
+    { getTasks, deleteTaskAction },
     dispatch);
 };
 

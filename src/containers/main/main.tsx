@@ -63,7 +63,9 @@ class Main extends React.Component<IMain<IInitialState>> {
             data-autohide="false"
           >
             <div className="toast-header">
-              <strong className="mr-auto">Start time must be earlier than the end</strong>
+              <strong className="mr-auto error-toast">
+                Start time must be earlier than the end, <br /> task cannot be empty
+                </strong>
               <button
                 type="button"
                 className="ml-2 mb-1 close"

@@ -1,11 +1,34 @@
 import { Dispatch } from 'redux';
-import { sendTask, getUserTasks } from '../services/apiRequests';
+import { sendTask, getUserTasks, deleteCurrentTask } from '../services/apiRequests';
 
 export const setUser = (user: string) => (dispatch: Dispatch) => {
   return dispatch({
     type: 'SET_USER',
     payload: user,
   });
+};
+
+export const getTasks = (user: string) => async (dispatch: Dispatch) => {
+  try {
+    const getAllTasks = await getUserTasks(user);
+    if (getAllTasks.error) {
+      return getAllTasks.error.message;
+    }
+    if (getAllTasks.tasks.length > 0) {
+      return dispatch({
+        type: 'GET_USER_TASKS',
+        payload: { tasks: getAllTasks.tasks },
+      });
+    }
+
+    return dispatch({
+      type: 'GET_USER_TASKS',
+      payload: { tasks: [{}] },
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const addTask = (data: {
@@ -29,24 +52,16 @@ export const addTask = (data: {
   }
 };
 
-export const getTasks = (user: string) => async (dispatch: Dispatch) => {
+export const deleteTaskAction = (title: string, user: string) => async (dispatch: Dispatch) => {
   try {
-    const getAllTasks = await getUserTasks(user);
-    if (getAllTasks.error) {
-      return getAllTasks.error.message;
-    }
-    if (getAllTasks.tasks.length > 0) {
-      return dispatch({
-        type: 'GET_USER_TASKS',
-        payload: { tasks: getAllTasks.tasks },
-      });
+    const deleteTask = await deleteCurrentTask({ title, user });
+    if (deleteTask.error) {
+      return deleteTask.error.message;
     }
 
     return dispatch({
-      type: 'GET_USER_TASKS',
-      payload: { tasks: [{}] },
+      type: 'DELETE_CURRENT',
     });
-
   } catch (error) {
     console.log(error);
   }

@@ -68,7 +68,7 @@ class Modal extends React.Component<IModal> {
         start: this.state.start,
         title: this.state.title,
       };
-      if (duration > 0) {
+      if (duration > 0 && this.state.title !== '') {
         this.props.addTask(data);
         this.props.getTasks(this.props.user);
       } else {
