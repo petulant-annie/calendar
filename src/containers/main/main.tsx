@@ -83,8 +83,7 @@ class Main extends React.Component<IMain<IInitialState>> {
     );
 
     const dataStr = this.props.tasks ? JSON.stringify(this.props.tasks) : 'Error';
-    const dataUri =
-      `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+    const dataUri = `data:application/json;charset=utf-8,${dataStr}`;
 
     return (
       <div className="main-content">
@@ -113,7 +112,7 @@ class Main extends React.Component<IMain<IInitialState>> {
           >
             Logout
           </button>
-          <a href={dataUri} download="data.json" className="stretched-link">Download schedule</a>
+          <a href={dataUri} download="data.json">Download schedule</a>
         </div>
         <CalendarContent />
         <LoginPopup />

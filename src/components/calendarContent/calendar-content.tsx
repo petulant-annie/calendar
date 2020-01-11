@@ -58,7 +58,7 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
               <td
                 key={index}
                 rowSpan={item.duration / 15}
-                className="task-content-item"
+                className="task-col-item"
                 data-toggle="modal"
                 data-target="#deleteModal"
                 onClick={this.handleCurrentTask.bind(this, item.title)}
@@ -72,9 +72,9 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
         return (
           <tr
             key={value[0]}
-            className="cell"
+            className="calendar-row"
           >
-            <td className="task-time">
+            <td className="time-col">
               {value[1]}
             </td>
             {currentUserTasks}
