@@ -20,16 +20,8 @@ calendar.post('/', asyncMiddleware(async (req, res) => {
     duration: req.body.duration,
     title: req.body.title,
   });
-
-  const modifiedTask = { 
-    _id: task._id, 
-    user: task.user,
-    start: task.start, 
-    duration: task.duration, 
-    title: task.title,
-  };
   infoLogger.info('task created');
-  res.send({ task: modifiedTask });
+  res.send({ task });
 }));
 
 calendar.delete('/', asyncMiddleware(async (req, res) => {
