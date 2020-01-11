@@ -6,8 +6,8 @@ Scheduler cover only one same day
 ## Usage
 ```bash
 git clone
--npm start
--npm run watch
+* npm start
+* npm run watch
 ```
 
 ## License

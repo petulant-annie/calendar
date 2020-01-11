@@ -1,6 +1,13 @@
 import { Dispatch } from 'redux';
 import { sendTask, getUserTasks, deleteCurrentTask } from '../services/apiRequests';
 
+export const errorAction = (error: boolean) => (dispatch: Dispatch) => {
+  return dispatch({
+    type: 'ERROR_ACTION',
+    payload: { error },
+  });
+};
+
 export const setUser = (user: string) => (dispatch: Dispatch) => {
   return dispatch({
     type: 'SET_USER',
@@ -27,7 +34,7 @@ export const getTasks = (user: string) => async (dispatch: Dispatch) => {
     });
 
   } catch (error) {
-    console.log(error);
+    errorAction(true);
   }
 };
 
@@ -48,13 +55,13 @@ export const addTask = (data: {
       payload: data,
     });
   } catch (error) {
-    console.log(error);
+    errorAction(true);
   }
 };
 
-export const deleteTaskAction = (title: string, user: string) => async (dispatch: Dispatch) => {
+export const deleteTaskAction = (id: string, user: string) => async (dispatch: Dispatch) => {
   try {
-    const deleteTask = await deleteCurrentTask({ title, user });
+    const deleteTask = await deleteCurrentTask({ id, user });
     if (deleteTask.error) {
       return deleteTask.error.message;
     }
@@ -63,15 +70,8 @@ export const deleteTaskAction = (title: string, user: string) => async (dispatch
       type: 'DELETE_CURRENT',
     });
   } catch (error) {
-    console.log(error);
+    errorAction(true);
   }
-};
-
-export const errorAction = (error: boolean) => (dispatch: Dispatch) => {
-  return dispatch({
-    type: 'ERROR_ACTION',
-    payload: { error },
-  });
 };
 
 export const logout = () => (dispatch: Dispatch) => {

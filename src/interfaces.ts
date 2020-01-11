@@ -1,5 +1,6 @@
 
 export interface ITasksObject {
+  _id?: string;
   start: string;
   duration: number;
   title: string;

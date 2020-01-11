@@ -20,12 +20,20 @@ calendar.post('/', asyncMiddleware(async (req, res) => {
     duration: req.body.duration,
     title: req.body.title,
   });
+
+  const modifiedTask = { 
+    _id: task._id, 
+    user: task.user,
+    start: task.start, 
+    duration: task.duration, 
+    title: task.title,
+  };
   infoLogger.info('task created');
-  res.send({ task });
+  res.send({ task: modifiedTask });
 }));
 
 calendar.delete('/', asyncMiddleware(async (req, res) => {
-  await Task.findOneAndRemove({ title: req.body.title, user: req.body.user, });
+  await Task.findOneAndRemove({ _id: req.body.id, user: req.body.user, });
   infoLogger.info('task deleted');
   res.send({});
 }));

@@ -33,7 +33,7 @@ export const getUserTasks = async (user: string) => {
   }
 };
 
-export const deleteCurrentTask = async (currentTask: { title: string, user: string }) => {
+export const deleteCurrentTask = async (currentTask: { id: string, user: string }) => {
   try {
     const res = await fetch('http://localhost:3030/', {
       method: 'DELETE',

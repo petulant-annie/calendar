@@ -13,7 +13,7 @@ interface ICalendarContent<IInitialState> {
   tasks: ITasksObject[];
   user: string;
   getTasks: (user: string) => void;
-  deleteTaskAction: (title: string, user: string) => void;
+  deleteTaskAction: (id: string, user: string) => void;
 }
 
 class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
@@ -61,7 +61,7 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
                 className="task-col-item"
                 data-toggle="modal"
                 data-target="#deleteModal"
-                onClick={this.handleCurrentTask.bind(this, item.title)}
+                onClick={this.handleCurrentTask.bind(this, item._id)}
               >
                 {item.title}
               </td>
