@@ -1,38 +1,38 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Button, Confirm } from 'semantic-ui-react';
 
 import { TIMESTAMP } from '../../constants';
-import Modal from '../popup/popup';
 import { IInitialState, ITasksObject } from '../../interfaces';
 import { getTasks, deleteTaskAction } from '../../actions/taskActions';
 
 import './style/calendar.sass';
 
-interface ICalendarContent<IInitialState> {
+interface ICalendarContent {
   tasks: ITasksObject[];
   user: string;
   getTasks: (user: string) => void;
   deleteTaskAction: (id: string, user: string) => void;
 }
 
-class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
-  state: { currentTask: string };
-  constructor(props: ICalendarContent<IInitialState>) {
+class CalendarContent extends React.Component<ICalendarContent> {
+  state: { currentTask: string, deleteTask: boolean };
+  constructor(props: ICalendarContent) {
     super(props);
-    this.state = {
-      currentTask: '',
-    };
+    this.state = { currentTask: '', deleteTask: false };
   }
 
+  handleCancelModal = () => this.setState({ deleteTask: false });
+
   handleCurrentTask(currentTask: string) {
-    this.setState({ currentTask });
+    this.setState({ currentTask, deleteTask: true });
   }
 
   handleDeleteTask = async () => {
     await this.props.deleteTaskAction(this.state.currentTask, this.props.user);
     await this.props.getTasks(this.props.user);
-    this.setState({ currentTask: '' });
+    this.setState({ currentTask: '', deleteTask: false });
   }
 
   componentDidMount() {
@@ -42,7 +42,7 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
     }
   }
 
-  componentDidUpdate(prevProps: ICalendarContent<IInitialState>) {
+  componentDidUpdate(prevProps: ICalendarContent) {
     if (this.props.user !== prevProps.user &&
       this.props.user) {
       this.props.getTasks(this.props.user);
@@ -50,6 +50,8 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
   }
 
   render() {
+    const { deleteTask } = this.state;
+
     const taskList = (
       Object.entries(TIMESTAMP).map((value: [string, string]) => {
         const currentUserTasks = this.props.tasks.map((item, index) => {
@@ -59,8 +61,6 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
                 key={index}
                 rowSpan={item.duration / 15}
                 className="task-col-item"
-                data-toggle="modal"
-                data-target="#deleteModal"
                 onClick={this.handleCurrentTask.bind(this, item._id)}
               >
                 {item.title}
@@ -90,41 +90,13 @@ class CalendarContent extends React.Component<ICalendarContent<IInitialState>> {
             {taskList}
           </tbody>
         </table>
-        <Modal />
-        <div
-          className="modal fade"
-          id="deleteModal"
-          tabIndex={-1}
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">Delete Task?</h5>
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >Cancel
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  data-dismiss="modal"
-                  onClick={this.handleDeleteTask}
-                >Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Confirm
+          header="Delete Task?"
+          content="Do you want to delete current task?"
+          open={deleteTask}
+          onCancel={this.handleCancelModal}
+          onConfirm={this.handleDeleteTask}
+        />
       </div>
     );
   }

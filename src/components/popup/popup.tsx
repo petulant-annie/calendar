@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Button, Header, TextArea, Modal, Form, Message } from 'semantic-ui-react';
 
 import { TIMESTAMP } from '../../constants';
 import { IInitialState } from '../../interfaces';
@@ -8,12 +9,13 @@ import { addTask, getTasks, errorAction } from '../../actions/taskActions';
 
 interface IModal {
   user: string;
+  error: boolean;
   addTask: (data: { user: string, start: string, duration: number, title: string }) => void;
   getTasks: (user: string) => void;
   errorAction: (error: boolean) => void;
 }
 
-class Modal extends React.Component<IModal> {
+class AddTaskModal extends React.Component<IModal> {
   selectStart: HTMLSelectElement;
   selectEnd: HTMLSelectElement;
   state: {
@@ -22,6 +24,7 @@ class Modal extends React.Component<IModal> {
     end: string;
     endDuration: number;
     title: string;
+    modalOpen: boolean;
   };
 
   constructor(props: IModal) {
@@ -32,31 +35,37 @@ class Modal extends React.Component<IModal> {
       end: '',
       endDuration: 0,
       title: '',
+      modalOpen: false,
     };
   }
 
-  handleSelectStart = (e: React.ChangeEvent) => {
-    e.preventDefault();
+  handleOpen = () => this.setState({ modalOpen: true });
+  handleClose = () => {
+    this.setState({ modalOpen: false });
+    this.props.errorAction(false);
+  }
+
+  handleSelectStart = (e: React.SyntheticEvent<HTMLElement, Event>, value: object) => {
+    const select = value as HTMLSelectElement;
     Object.entries(TIMESTAMP).find((elem) => {
-      if (this.selectStart.value === elem[0]) {
+      if (select.value === elem[0]) {
         this.setState({ start: elem[1], startDuration: elem[0] });
       }
     });
   }
 
-  handleSelectEnd = (e: React.ChangeEvent) => {
-    e.preventDefault();
+  handleSelectEnd = (e: React.SyntheticEvent<HTMLElement, Event>, value: object) => {
+    const select = value as HTMLSelectElement;
     Object.entries(TIMESTAMP).find((elem) => {
-      if (this.selectEnd.value === elem[0]) {
+      if (select.value === elem[0]) {
         this.setState({ end: elem[1], endDuration: elem[0] });
       }
     });
   }
 
-  handleTitleChange = (e: React.ChangeEvent) => {
-    e.preventDefault();
-    const target = e.target as HTMLTextAreaElement;
-    this.setState({ title: target.value });
+  handleTitleChange = (e: React.SyntheticEvent, data: object) => {
+    const input = data as HTMLTextAreaElement;
+    this.setState({ title: input.value });
   }
 
   handleSaveTask = async () => {
@@ -71,6 +80,7 @@ class Modal extends React.Component<IModal> {
       if (duration > 0 && this.state.title !== '') {
         await this.props.addTask(data);
         await this.props.getTasks(this.props.user);
+        await this.handleClose();
       } else {
         this.props.errorAction(true);
       }
@@ -80,80 +90,72 @@ class Modal extends React.Component<IModal> {
   render() {
     const timeSelect = (
       Object.entries(TIMESTAMP).map((value: [string, string]) => {
-        return (
-          <option
-            key={value[0]}
-            value={value[0]}
-          >
-            {value[1]}
-          </option>
-        );
+        return ({
+          key: `${value[0]}`,
+          value: `${value[0]}`,
+          text: `${value[1]}`,
+        });
       })
     );
 
+    const triggerButton = (
+      <Button
+        onClick={this.handleOpen}
+        color="blue"
+        basic={true}
+      >Add task
+      </Button>
+    );
+
+    const errorMessage = (
+      <Message negative={true}>
+        <Message.Header>Error!</Message.Header>
+        <p>Start time must be earlier than the end</p>
+        <p>Task cannot be empty!</p>
+      </Message>
+    );
+
     return (
-      <div
-        className="modal fade"
-        id="taskModalCenter"
-        tabIndex={-1}
-        role="dialog"
-        aria-labelledby="taskModalCenterTitle"
-        aria-hidden="true"
+      <Modal
+        trigger={triggerButton}
+        open={this.state.modalOpen}
+        onClose={this.handleClose}
+        size="small"
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="taskModalLongTitle">Add task</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="form-group time-select">
-                <select
-                  className="custom-select start-time-select-item"
-                  required={true}
-                  ref={select => this.selectStart = select}
-                  onChange={this.handleSelectStart}
-                >
-                  <option value="">Start</option>
-                  {timeSelect}
-                </select>
-                <select
-                  className="custom-select"
-                  required={true}
-                  ref={select => this.selectEnd = select}
-                  onChange={this.handleSelectEnd}
-                >
-                  <option value="">End</option>
-                  {timeSelect}
-                </select>
-              </div>
-              <textarea
-                className="form-control"
-                id="taskInput"
-                rows={3}
-                onChange={this.handleTitleChange}
-              />
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-              >Close
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                data-dismiss="modal"
-                onClick={this.handleSaveTask}
-              >Save changes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <Header content="Add task" />
+        {this.props.error ? errorMessage : ''}
+        <Form>
+          <Form.Group widths="equal">
+            <Form.Select
+              fluid={true}
+              options={timeSelect}
+              placeholder="Start"
+              onChange={this.handleSelectStart}
+            />
+            <Form.Select
+              fluid={true}
+              options={timeSelect}
+              placeholder="End"
+              onChange={this.handleSelectEnd}
+            />
+          </Form.Group>
+          <TextArea
+            rows={3}
+            onChange={this.handleTitleChange}
+          />
+        </Form>
+        <Modal.Actions>
+          <Button
+            onClick={this.handleClose}
+          >Cancel
+          </Button>
+          <Button
+            primary={true}
+            onClick={this.handleSaveTask}
+          >Submit
+          </Button>
+        </Modal.Actions>
+      </Modal>
     );
   }
 }
@@ -165,4 +167,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Modal);
+export default connect(mapStateToProps, mapDispatchToProps)(AddTaskModal);

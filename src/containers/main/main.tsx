@@ -1,26 +1,26 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Button } from 'semantic-ui-react';
 
+import AddTaskModal from '../../components/popup/popup';
 import CalendarContent from '../../components/calendarContent/calendar-content';
 import LoginPopup from '../../components/login/loginPopup';
 import { IInitialState } from '../../interfaces';
-import { setUser, logout, errorAction } from '../../actions/taskActions';
+import { setUser, logout } from '../../actions/taskActions';
 
 import './style/main.sass';
 
-interface IMain<IInitialState> {
+interface IMain {
   setUser: (user: string) => void;
-  errorAction: (error: boolean) => void;
   logout: () => void;
   user: string;
   tasks: {};
-  error: boolean;
 }
 
-class Main extends React.Component<IMain<IInitialState>> {
+class Main extends React.Component<IMain> {
   state: { isUser: boolean };
-  constructor(props: IMain<IInitialState>) {
+  constructor(props: IMain) {
     super(props);
     this.state = { isUser: false };
   }
@@ -29,10 +29,6 @@ class Main extends React.Component<IMain<IInitialState>> {
     localStorage.clear();
     this.props.logout();
     this.setState({ isUser: false });
-  }
-
-  handleToastClose = () => {
-    this.props.errorAction(false);
   }
 
   componentDidMount() {
@@ -46,76 +42,32 @@ class Main extends React.Component<IMain<IInitialState>> {
     }
   }
 
-  componentDidUpdate(prevProps: IMain<IInitialState>) {
+  componentDidUpdate(prevProps: IMain) {
     if (this.props.user !== prevProps.user && this.props.user.length > 0) {
       this.setState({ isUser: true });
     }
   }
 
   render() {
-    const toaster = (
-      this.props.error ?
-        (
-          <div
-            className="toast"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-            data-autohide="false"
-          >
-            <div className="toast-header">
-              <strong className="mr-auto error-toast">
-                Start time must be earlier than the end, <br /> task cannot be empty
-                </strong>
-              <button
-                type="button"
-                className="ml-2 mb-1 close"
-                data-dismiss="toast"
-                aria-label="Close"
-                onClick={this.handleToastClose}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </div>
-        ) :
-        ''
-    );
-
     const dataStr = this.props.tasks ? JSON.stringify(this.props.tasks) : 'Error';
     const dataUri = `data:application/json;charset=utf-8,${dataStr}`;
+    const logoutBtn = (
+      <Button
+        onClick={this.handleLogOut}
+        color="red"
+        basic={true}
+      >Logout
+      </Button>
+    );
 
     return (
       <div className="main-content">
-        {toaster}
         <div className="buttons-container">
-          <button
-            type="button"
-            className="btn btn-primary header-btn"
-            data-toggle="modal"
-            data-target="#taskModalCenter"
-          >
-            Add Task
-          </button>
-          <button
-            type="button"
-            className={!this.state.isUser ? 'btn btn-primary header-btn' : 'hide'}
-            data-toggle="modal"
-            data-target="#loginPopup"
-          >
-            Login
-          </button>
-          <button
-            type="button"
-            className={this.state.isUser ? 'btn btn-secondary header-btn' : 'hide'}
-            onClick={this.handleLogOut}
-          >
-            Logout
-          </button>
+          {this.state.isUser ? <AddTaskModal /> : ''}
+          {this.state.isUser ? logoutBtn : <LoginPopup />}
           <a href={dataUri} download="data.json">Download schedule</a>
         </div>
         <CalendarContent />
-        <LoginPopup />
       </div>
     );
   }
@@ -124,7 +76,7 @@ class Main extends React.Component<IMain<IInitialState>> {
 const mapStateToProps = (state: IInitialState) => state;
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return bindActionCreators(
-    { setUser, logout, errorAction },
+    { setUser, logout },
     dispatch);
 };
 

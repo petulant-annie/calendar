@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { Button, Header, Input, Modal, Form } from 'semantic-ui-react';
 
 import { IInitialState } from '../../interfaces';
 import { setUser } from '../../actions/taskActions';
@@ -10,13 +11,16 @@ interface ILoginPopup {
 }
 
 class LoginPopup extends React.Component<ILoginPopup> {
-  state: { user: string };
+  state: { user: string; modalOpen: boolean; };
   constructor(props: ILoginPopup) {
     super(props);
-    this.state = { user: '' };
+    this.state = { user: '', modalOpen: false };
   }
 
-  handleSetUser = (e: React.ChangeEvent) => {
+  handleOpen = () => this.setState({ modalOpen: true });
+  handleClose = () => this.setState({ modalOpen: false });
+
+  handleSetUser = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const target = e.target as HTMLInputElement;
     this.setState({ user: target.value });
@@ -27,55 +31,47 @@ class LoginPopup extends React.Component<ILoginPopup> {
       localStorage.setItem('user', `${this.state.user}`);
       this.props.setUser(this.state.user);
     }
+    this.handleClose();
   }
 
   render() {
+    const triggerButton = (
+      <Button
+        onClick={this.handleOpen}
+        color="blue"
+        basic={true}
+      >Login
+      </Button>
+    );
+
     return (
-      <div
-        className="modal fade"
-        id="loginPopup"
-        tabIndex={-1}
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
+      <Modal
+        trigger={triggerButton}
+        open={this.state.modalOpen}
+        onClose={this.handleClose}
+        size="mini"
       >
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Login</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Enter username:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="username"
-                  onChange={this.handleSetUser}
-                />
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-              >Close
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                data-dismiss="modal"
-                onClick={this.handleSaveUser}
-              >Save changes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <Header content="Login" />
+        <Form>
+          <Form.Input
+            placeholder="username"
+            size="large"
+            fluid={true}
+            onChange={this.handleSetUser}
+          />
+        </Form>
+        <Modal.Actions>
+          <Button
+            onClick={this.handleClose}
+          >Cancel
+          </Button>
+          <Button
+            primary={true}
+            onClick={this.handleSaveUser}
+          >Login
+          </Button>
+        </Modal.Actions>
+      </Modal>
     );
   }
 }
