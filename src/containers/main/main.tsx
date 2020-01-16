@@ -49,8 +49,10 @@ class Main extends React.Component<IMain> {
   }
 
   render() {
+    const { isUser } = this.state;
     const dataStr = this.props.tasks ? JSON.stringify(this.props.tasks) : 'Error';
     const dataUri = `data:application/json;charset=utf-8,${dataStr}`;
+
     const logoutBtn = (
       <Button
         onClick={this.handleLogOut}
@@ -63,9 +65,9 @@ class Main extends React.Component<IMain> {
     return (
       <div className="main-content">
         <div className="buttons-container">
-          {this.state.isUser ? <AddTaskModal /> : ''}
-          {this.state.isUser ? logoutBtn : <LoginPopup />}
-          <a href={dataUri} download="data.json">Download schedule</a>
+          {isUser ? <AddTaskModal /> : ''}
+          {isUser ? logoutBtn : <LoginPopup />}
+          {isUser ? <a href={dataUri} download="data.json">Download schedule</a> : ''}
         </div>
         <CalendarContent />
       </div>

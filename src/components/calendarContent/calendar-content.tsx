@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Confirm } from 'semantic-ui-react';
+import { Confirm } from 'semantic-ui-react';
 
 import { TIMESTAMP } from '../../constants';
 import { IInitialState, ITasksObject } from '../../interfaces';
